@@ -18,5 +18,8 @@
 		"glob": "^10.2.3",
 		"prettier": "^2.8.8",
 		"typescript": "^5.0.4"
+	},
+	"dependencies": {
+		"browser-image-compression": "^2.0.2"
 	}
 }
