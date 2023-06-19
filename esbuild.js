@@ -8,7 +8,7 @@ const glob = require('glob');
 const srcDir = path.join(__dirname, srcDirName);
 const distDir = path.join(__dirname, distDirName);
 
-const entryPoints = glob.sync(`${srcDir}/**/*.ts`);
+const entryPoints = glob.sync(`${srcDir}/*.ts`);
 const outdir = distDir;
 
 // envプラグインの定義
@@ -30,19 +30,9 @@ const outdir = distDir;
 
 // copyプラグイン
 const copyStaticFiles = require('esbuild-copy-static-files');
-
-const gmailReceiveMailDir = 'gmail-receive-mail';
-const copyGmailReceiveMailStaticFilesPlugin = copyStaticFiles({
-	src: `./${srcDirName}/${gmailReceiveMailDir}/assets`,
-	dest: `./${distDirName}/${gmailReceiveMailDir}`,
-	dereference: true,
-	errorOnExist: false,
-});
-
-const primeVideoHistoryDir = 'prime-video-history';
-const copyPrimeVideoHistoryStaticFilesPlugin = copyStaticFiles({
-	src: `./${srcDirName}/${primeVideoHistoryDir}/assets`,
-	dest: `./${distDirName}/${primeVideoHistoryDir}`,
+const copyAssets = copyStaticFiles({
+	src: `./${srcDirName}/assets`,
+	dest: `./${distDirName}`,
 	dereference: true,
 	errorOnExist: false,
 });
@@ -56,11 +46,7 @@ const options = {
 	external: [],
 	bundle: true,
 	tsconfig: './tsconfig.json',
-	plugins: [
-		envPlugin,
-		copyGmailReceiveMailStaticFilesPlugin,
-		copyPrimeVideoHistoryStaticFilesPlugin,
-	],
+	plugins: [copyAssets],
 };
 
 const { build } = require('esbuild');
